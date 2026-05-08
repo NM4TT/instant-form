@@ -5,6 +5,12 @@ project:
 
 branding:
   logo_url: "/logo.svg"
+  colors:
+    primary: "#2563eb"
+    background: "#ffffff"
+    surface: "#f9fafb"
+    text: "#000000"
+    border: "rgba(0, 0, 0, 0.1)"
   fonts:
     google_fonts_url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@400;700&display=swap"
     display: "Montserrat"

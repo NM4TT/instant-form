@@ -15,6 +15,7 @@ const pageTitle = title || form?.project.name || "Instant Form";
 const logoUrl = form?.branding.logo_url || "/logo.svg";
 const aboutTitle = form?.pages.about.title || "About";
 const fonts = form?.branding.fonts;
+const colors = form?.branding.colors;
 ---
 
 <!doctype html>
@@ -29,12 +30,22 @@ const fonts = form?.branding.fonts;
 		<style define:vars={{
 			displayFont: fonts?.display ? `'${fonts.display}', var(--font-display-fallback)` : 'var(--font-display-fallback)',
 			sansFont: fonts?.sans ? `'${fonts.sans}', var(--font-sans-fallback)` : 'var(--font-sans-fallback)',
-			monoFont: fonts?.mono ? `'${fonts.mono}', var(--font-mono-fallback)` : 'var(--font-mono-fallback)'
+			monoFont: fonts?.mono ? `'${fonts.mono}', var(--font-mono-fallback)` : 'var(--font-mono-fallback)',
+			primaryColor: colors?.primary || 'var(--secondary)',
+			bgColor: colors?.background || 'var(--bg-base)',
+			surfaceColor: colors?.surface || 'var(--bg-surface)',
+			textColor: colors?.text || 'var(--text-base)',
+			borderColor: colors?.border || 'var(--border-color)'
 		}}>
 			:root {
 				--font-display: var(--displayFont);
 				--font-sans: var(--sansFont);
 				--font-mono: var(--monoFont);
+				--secondary: var(--primaryColor);
+				--bg-base: var(--bgColor);
+				--bg-surface: var(--surfaceColor);
+				--text-base: var(--textColor);
+				--border-color: var(--borderColor);
 			}
 		</style>
 	</head>

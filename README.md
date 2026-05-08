@@ -51,7 +51,11 @@ branding:
     google_fonts_url: "https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
     display: "Montserrat"
   colors:
-    primary: "#2563eb" # Custom CSS variables supported in app.css
+    primary: "#2563eb"
+    background: "#ffffff"
+    surface: "#f9fafb"
+    text: "#000000"
+    border: "rgba(0, 0, 0, 0.1)" # Supports hex, rgb, rgba, and named colors
 
 pages:
   success:

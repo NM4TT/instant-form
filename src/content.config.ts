@@ -34,9 +34,11 @@ const formSchema: z.ZodType<FormConfig> = z.object({
   branding: z.object({
     logo_url: z.string(),
     colors: z.object({
-      primary: z.string(),
-      background: z.string(),
-      text: z.string(),
+      primary: z.string().optional(),
+      background: z.string().optional(),
+      surface: z.string().optional(),
+      text: z.string().optional(),
+      border: z.string().optional(),
     }).optional(),
     fonts: z.object({
       google_fonts_url: z.string().url().optional(),

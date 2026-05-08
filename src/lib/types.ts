@@ -6,9 +6,11 @@ export interface FormConfig {
   branding: {
     logo_url: string;
     colors?: {
-      primary: string;
-      background: string;
-      text: string;
+      primary?: string;
+      background?: string;
+      surface?: string;
+      text?: string;
+      border?: string;
     };
     fonts?: {
       google_fonts_url?: string;
