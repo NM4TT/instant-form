@@ -1,0 +1,82 @@
+@import "tailwindcss";
+
+@theme {
+  --color-secondary: var(--secondary);
+  --color-accent: var(--color-secondary);
+  
+  --font-sans: var(--font-sans);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+
+  --animate-shake: shake 0.4s ease-in-out;
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    50% { transform: translateX(5px); }
+    75% { transform: translateX(-5px); }
+  }
+}
+
+:root {
+  /* Fallbacks */
+  --font-sans-fallback: "Inter", ui-sans-serif, system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display-fallback: "Syne", var(--font-sans-fallback);
+  --font-mono-fallback: "Office Code Pro", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Initialize with fallbacks, Layout.astro will override if YAML has values */
+  --font-sans: var(--font-sans-fallback);
+  --font-display: var(--font-display-fallback);
+  --font-mono: var(--font-mono-fallback);
+
+  --bg-base: #ffffff;
+  --bg-surface: #f9fafb;
+  --text-base: #000000;
+  --secondary: #2563eb;
+  --border-color: rgba(0, 0, 0, 0.1);
+}
+
+@layer base {
+  html {
+    background-color: var(--bg-base);
+    color: var(--text-base);
+    @apply font-sans antialiased;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-base);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight text-current font-extrabold;
+  }
+}
+
+.glass-header {
+  @apply sticky top-0 z-50 backdrop-blur-xl border-b border-transparent;
+  background-color: color-mix(in srgb, var(--bg-base) 70%, transparent);
+}
+
+.btn-primary {
+  @apply font-display text-xs font-bold uppercase tracking-widest py-3 px-8 rounded-lg cursor-pointer
+         border-2 transition-all duration-200 active:opacity-80;
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--secondary);
+}
+
+.input-base {
+  @apply w-full p-4 rounded-xl border border-secondary/20 bg-white 
+         focus:ring-2 focus:ring-secondary/50 focus:border-secondary 
+         outline-hidden transition-all;
+}
+
+.input-error {
+  @apply border-red-500 focus:ring-red-500/50 focus:border-red-500 animate-shake;
+}

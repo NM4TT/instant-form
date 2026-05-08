@@ -1,0 +1,10 @@
+services:
+  web:
+    image: nginx:alpine
+    container_name: instant-form
+    volumes:
+      - ./dist:/usr/share/nginx/html:ro
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "8081:80"
+    restart: unless-stopped

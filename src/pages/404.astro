@@ -1,0 +1,17 @@
+---
+import Layout from '#layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const formEntries = await getCollection('form');
+const form = formEntries[0]?.data;
+
+const error404 = form?.pages.error_404 || { title: "404", message: "Page not found" };
+---
+
+<Layout title={error404.title}>
+	<div class="mt-20 text-center">
+		<h1 class="text-6xl md:text-8xl mb-8">{error404.title}</h1>
+		<p class="text-xl opacity-70 mb-12">{error404.message}</p>
+        <a href="/" class="btn-primary">Go Home</a>
+	</div>
+</Layout>

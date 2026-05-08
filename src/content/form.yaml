@@ -1,0 +1,68 @@
+# Project: instant-form configuration
+project:
+  name: "The AI Perspective Survey"
+  description: "Share your thoughts on the rapid evolution of Artificial Intelligence since the launch of ChatGPT."
+
+branding:
+  logo_url: "/logo.svg"
+  fonts:
+    google_fonts_url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@400;700&display=swap"
+    display: "Montserrat"
+    sans: "Open Sans"
+
+# Navigation and extra pages
+pages:
+  about:
+    title: "About This Survey"
+    content: "This research project aims to understand public sentiment regarding the 'AI Rush' we've experienced over the last few years. All responses are encrypted client-side before being processed."
+  error_404:
+    title: "Survey Not Found"
+    message: "The requested survey is currently unavailable or has expired."
+  summary:
+    title: "Verify Your Thoughts"
+    description: "Please review your perspectives on AI before final submission."
+  success:
+    title: "Insight Received"
+    message: "Thank you for contributing to this research. Your perspective is valuable."
+  failure:
+    title: "Transmission Interrupted"
+    message: "We couldn't securely send your responses. Please try again."
+
+# Global Form Settings
+settings:
+  pagination_size: 2
+  mockMode: true
+  submit_url: "https://api.instant-form.ai/v1/collect"
+
+# Form Content
+questions:
+  - type: "section"
+    title: "The Impact of Innovation"
+    questions:
+      - id: "innovation_pace"
+        type: "star"
+        label: "How would you rate the current pace of AI innovation?"
+        max_stars: 5
+        required: true
+
+      - id: "daily_usage"
+        type: "dropdown"
+        label: "How often do you use Generative AI (ChatGPT, Claude, etc.)?"
+        options: ["Daily", "Weekly", "Monthly", "Rarely", "Never"]
+        required: true
+
+  - id: "ai_fears"
+    type: "ranking"
+    label: "Rank your concerns regarding AI (Most concerning at the top)"
+    items: ["Job Displacement", "Data Privacy", "AI Hallucinations", "Loss of Human Creativity"]
+    required: true
+
+  - id: "general_sentiment"
+    type: "text"
+    label: "In one sentence, what is your biggest hope for the future of AI?"
+    placeholder: "I hope AI helps us solve climate change..."
+    required: true
+
+  - id: "survey_version"
+    type: "hidden"
+    value: "ai_rush_2026_v1"

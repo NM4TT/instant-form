@@ -1,0 +1,7 @@
+.vscode
+.astro
+.pnpm-store
+dist
+node_modules
+playwright-report
+test-results
