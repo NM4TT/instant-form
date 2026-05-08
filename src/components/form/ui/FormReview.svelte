@@ -5,7 +5,7 @@
   let { allQuestions, responses, summaryConfig }: { 
     allQuestions: Question[], 
     responses: Record<string, any>, 
-    summaryConfig?: FormConfig['pages']['summary'] 
+    summaryConfig?: FormConfig['pages']['summary'] | undefined
   } = $props();
 </script>
 

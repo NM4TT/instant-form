@@ -26,6 +26,7 @@ const sectionSchema = z.object({
   questions: z.array(questionSchema),
 });
 
+// @ts-ignore
 const formSchema: z.ZodType<FormConfig> = z.object({
   project: z.object({
     name: z.string(),

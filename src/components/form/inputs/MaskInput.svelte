@@ -1,12 +1,11 @@
 <script lang="ts">
   import type { Question } from '#lib/types';
   
-  let { question, value = $bindable("") }: { 
+  let { question, value = $bindable(""), interacted = $bindable(false) }: { 
     question: Question, 
-    value: string 
+    value: string,
+    interacted: boolean
   } = $props();
-
-  let touched = $state(false);
 
   const isValid = $derived.by(() => {
     if (question.required && !value) return false;
@@ -14,10 +13,10 @@
     return true;
   });
 
-  const showError = $derived(touched && !isValid);
+  const showError = $derived(interacted && !isValid);
 
   const handleInput = (e: Event) => {
-    touched = true;
+    interacted = true;
     const target = e.target as HTMLInputElement;
     let val = target.value.replace(/\D/g, "");
     let mask = question.mask || "(999) 999-9999";

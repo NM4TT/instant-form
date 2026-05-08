@@ -1,13 +1,12 @@
 <script lang="ts">
   import type { Question } from '#lib/types';
   
-  let { question, value = $bindable("") }: { 
+  let { question, value = $bindable(""), interacted = $bindable(false) }: { 
     question: Question, 
-    value: string 
+    value: string,
+    interacted: boolean
   } = $props();
 
-  let touched = $state(false);
-  
   const isValid = $derived.by(() => {
     if (question.required && !value) return false;
     if (question.regex && value) {
@@ -17,10 +16,10 @@
     return true;
   });
 
-  const showError = $derived(touched && !isValid);
+  const showError = $derived(interacted && !isValid);
 
   const handleInput = () => {
-    touched = true;
+    interacted = true;
   };
 </script>
 

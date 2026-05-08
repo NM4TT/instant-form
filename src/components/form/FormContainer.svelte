@@ -50,7 +50,31 @@
     return initial;
   };
 
+  const initializeInteractions = () => {
+    const initial: Record<string, boolean> = {};
+    allQuestions.forEach(q => {
+      initial[q.id] = false;
+    });
+    return initial;
+  };
+
   let responses = $state<Record<string, any>>(initializeResponses());
+  let interactions = $state<Record<string, any>>(initializeInteractions());
+
+  $effect(() => {
+    allQuestions.forEach(q => {
+      if (!(q.id in responses)) {
+        if (q.type === 'hidden') responses[q.id] = q.value ?? "";
+        else if (q.type === 'star') responses[q.id] = 0;
+        else if (q.type === 'ranking') responses[q.id] = [...(q.items || [])];
+        else if (q.type === 'matrix') responses[q.id] = {};
+        else responses[q.id] = "";
+      }
+      if (!(q.id in interactions)) {
+        interactions[q.id] = false;
+      }
+    });
+  });
 
   // Flatten questions while preserving section metadata for pagination
   type Page = {
@@ -93,7 +117,19 @@
   const validatePage = () => {
     for (const q of currentQuestions) {
       const val = responses[q.id];
-      if (q.required && (val === undefined || val === "")) return false;
+      const interacted = interactions[q.id];
+
+      if (q.required) {
+        if (val === undefined || val === null || val === "") return false;
+        
+        if (q.type === 'star' && val === 0) return false;
+        if (q.type === 'ranking' && !interacted) return false;
+        if (q.type === 'matrix') {
+          const rows = q.rows || [];
+          if (rows.some((row: string) => !val[row])) return false;
+        }
+      }
+
       if (q.type === 'text' && q.regex && val) {
         const re = new RegExp(q.regex);
         if (!re.test(val)) return false;
@@ -133,6 +169,7 @@
 
     try {
       if (settings.mockMode) {
+        console.log("Mock Mode Enabled. Form Responses:", responses);
         await new Promise(resolve => setTimeout(resolve, 800));
         submitted = true;
         return;
@@ -193,6 +230,7 @@
           <QuestionRenderer 
             {question} 
             bind:value={responses[question.id]} 
+            bind:interacted={interactions[question.id]}
           />
         {/each}
       </div>

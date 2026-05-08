@@ -11,9 +11,9 @@
   }: { 
     currentPage: number, 
     totalPages: number, 
-    currentSectionTitle?: string, 
+    currentSectionTitle?: string | undefined, 
     showingSummary: boolean,
-    summaryConfig?: FormConfig['pages']['summary']
+    summaryConfig?: FormConfig['pages']['summary'] | undefined
   } = $props();
 </script>
 

@@ -4,9 +4,14 @@
   import { resolveImageUrl } from '#lib/utils';
 
   let { failureConfig, onRetry }: { 
-    failureConfig?: FormConfig['pages']['failure'],
+    failureConfig?: FormConfig['pages']['failure'] | undefined,
     onRetry: () => void
   } = $props();
+
+  const renderedMessage = $derived((failureConfig?.message || 'We encountered an error while processing your request. Please try again later.').replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g, 
+    '<a href="$2" class="text-secondary hover:underline font-bold decoration-2 underline-offset-4 transition-all" target="_blank" rel="noopener noreferrer">$1</a>'
+  ));
 </script>
 
 <div class="text-center py-12">
@@ -18,7 +23,9 @@
     </div>
   {/if}
   <h2 class="text-3xl font-display font-extrabold mb-4 text-red-600">{failureConfig?.title || 'Submission Failed'}</h2>
-  <p class="opacity-70 mb-8">{failureConfig?.message || 'We encountered an error while processing your request. Please try again later.'}</p>
+  <p class="opacity-70 mb-8 whitespace-pre-wrap">
+    {@html renderedMessage}
+  </p>
   
   <div class="flex flex-col sm:flex-row gap-4 justify-center">
     <button class="btn-primary bg-red-600! border-red-600! hover:bg-transparent! hover:text-red-600! rounded-full! p-4!" onclick={onRetry} aria-label="Retry">

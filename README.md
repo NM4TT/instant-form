@@ -32,6 +32,7 @@ A modern, production-ready, and easily brandable form generator built with **Ast
 - **Images:** Add up to 3 images per question from your `#assets/` folder.
 - **Review Summary:** An automated final step for users to verify their answers before submission.
 - **Custom Feedback Pages:** Fully customizable **Success** and **Failure** pages with support for custom messages and branding images.
+- **Markdown Links:** The **About**, **Success**, and **Failure** page content supports basic markdown link syntax `[Link Text](https://example.com)`, rendered with consistent branding.
 
 ---
 
@@ -70,7 +71,7 @@ pages:
 ```yaml
 settings:
   pagination_size: 3 # Questions per page
-  mockMode: false    # Set true to simulate submission without a backend
+  mockMode: false    # Set true to simulate submission. When true, the JSON payload is logged to the browser console.
   submit_url: "https://api.yoursite.com/submit"
   encryption:
     public_key: |
@@ -78,6 +79,75 @@ settings:
       ...
       -----END PUBLIC KEY-----
 ```
+
+---
+
+## 🔒 Data Submission & Security
+
+`instant-form` sends form responses to the configured `submit_url` via a **POST** request with a JSON body.
+
+### Submission Payload
+
+The structure of the submission JSON is **dynamically generated** based on the `questions` defined in your `src/content/form.yaml`.
+
+- **Key Mapping:** Every `id` defined for a question in the YAML file becomes a top-level key in the responses object.
+- **Flattened Structure:** Even if questions are grouped within `sections`, they are flattened into a single JSON object upon submission. There is no nesting in the payload for sections.
+- **Type-Specific Values:** The value associated with each key depends on the question type (e.g., `string` for text, `number` for star ratings, `string[]` for rankings, and `Record<string, string>` for matrices).
+
+**Example Mapping:**
+
+If your `form.yaml` looks like this:
+```yaml
+questions:
+  - id: "user_info"
+    type: "section"
+    questions:
+      - id: "full_name"
+        type: "text"
+  - id: "satisfaction"
+    type: "star"
+```
+
+The generated JSON payload (before stringification/encryption) will be:
+```json
+{
+  "full_name": "John Doe",
+  "satisfaction": 5
+}
+```
+
+#### 1. Standard Submission (No Encryption)
+When `encryption` is not configured in `src/content/form.yaml`, the payload is sent as a stringified JSON object within a `data` field:
+
+**Request:** `POST {submit_url}`
+**Body:**
+```json
+{
+  "data": "{\"user_name\":\"Jane Doe\",\"rating\":5}"
+}
+```
+
+#### 2. Encrypted Submission
+If a `public_key` is provided in the `settings.encryption` section, the responses object is encrypted **client-side** using **RSA-OAEP (SHA-256)**.
+
+- **Encryption Algorithm:** RSA-OAEP
+- **Hashing:** SHA-256
+- **Format:** The resulting encrypted binary data is encoded in **Base64**.
+
+**Request:** `POST {submit_url}`
+**Body:**
+```json
+{
+  "data": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA..." 
+}
+```
+*Your backend must use the corresponding private key to decrypt the Base64 string back into the JSON responses object.*
+
+### Mock Mode
+When `mockMode: true` is set in the configuration:
+- No network request is made.
+- The raw responses object is logged to the browser's developer console.
+- The form simulates a successful submission after a short delay.
 
 ---
 

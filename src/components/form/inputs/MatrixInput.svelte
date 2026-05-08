@@ -1,28 +1,26 @@
 <script lang="ts">
   import type { Question } from '#lib/types';
   
-  let { question, value = $bindable({}) }: { 
+  let { question, value = $bindable({}), interacted = $bindable(false) }: { 
     question: Question, 
-    value: Record<string, string> 
+    value: Record<string, string>,
+    interacted: boolean
   } = $props();
 
-  let touched = $state(false);
   const rows = question.rows || [];
   const cols = question.columns || [];
 
   const isValid = $derived.by(() => {
     if (!question.required) return true;
-    return rows.every(row => value[row]);
+    return rows.every((row: string) => value[row]);
   });
 
-  const showError = $derived(touched && !isValid);
-
   const handleInput = () => {
-    touched = true;
+    interacted = true;
   };
 </script>
 
-<div class="overflow-x-auto rounded-xl transition-all {showError ? 'border border-red-500 animate-shake bg-red-50' : 'border border-secondary/10'}">
+<div class="overflow-x-auto rounded-xl border border-secondary/10">
   <table class="w-full text-left border-collapse">
     <thead>
       <tr>

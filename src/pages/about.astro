@@ -10,13 +10,19 @@ if (!form) {
 }
 
 const about = form.pages.about;
+
+// Basic markdown link support: [text](url) -> <a href="url">text</a>
+const renderedContent = about.content.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g, 
+    '<a href="$2" class="text-secondary hover:underline font-bold decoration-2 underline-offset-4 transition-all" target="_blank" rel="noopener noreferrer">$1</a>'
+);
 ---
 
 <Layout title={about.title}>
 	<div class="mt-8 max-w-2xl">
 		<h1 class="text-4xl md:text-5xl mb-8">{about.title}</h1>
-		<div class="prose prose-lg">
-			<p>{about.content}</p>
+		<div class="prose prose-lg whitespace-pre-wrap">
+			<Fragment set:html={renderedContent} />
 		</div>
         <div class="mt-12">
             <a href="/" class="btn-primary">Back to Form</a>

@@ -1,34 +1,30 @@
 <script lang="ts">
   import type { Question } from '#lib/types';
   
-  let { question, value = $bindable("") }: { 
+  let { question, value = $bindable(""), interacted = $bindable(false) }: { 
     question: Question, 
-    value: string 
+    value: string,
+    interacted: boolean
   } = $props();
-
-  let touched = $state(false);
 
   const isValid = $derived.by(() => {
     if (question.required && !value) return false;
     return true;
   });
 
-  const showError = $derived(touched && !isValid);
-
   const handleChange = () => {
-    touched = true;
+    interacted = true;
   };
 </script>
 
 <div class="relative">
-  <select
-    id={question.id}
+  <select 
     bind:value
     onchange={handleChange}
     required={question.required}
-    class="input-base pr-10 appearance-none cursor-pointer {showError ? 'input-error' : ''}"
+    class="input-base pr-10 appearance-none cursor-pointer"
   >
-    <option value="" disabled selected>Select an option</option>
+    <option value="" disabled selected>{question.placeholder || 'Select an option...'}</option>
     {#each question.options || [] as option}
       <option value={option}>{option}</option>
     {/each}

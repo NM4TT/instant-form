@@ -2,9 +2,10 @@
   import { onMount } from 'svelte';
   import type { Question } from '#lib/types';
 
-  let { question, value = $bindable([]) }: { 
+  let { question, value = $bindable([]), interacted = $bindable(false) }: { 
     question: Question, 
-    value: string[] 
+    value: string[],
+    interacted: boolean
   } = $props();
 
   onMount(() => {
@@ -14,6 +15,7 @@
   });
 
   const move = (index: number, direction: number) => {
+    interacted = true;
     const newIndex = index + direction;
     if (newIndex < 0 || newIndex >= value.length) return;
     const items = [...value];
@@ -48,6 +50,7 @@
       return;
     }
 
+    interacted = true;
     const items = [...value];
     const [movedItem] = items.splice(draggedIndex, 1);
     items.splice(targetIndex, 0, movedItem);

@@ -8,8 +8,11 @@
   import type { Question } from '#lib/types';
   import { resolveImageUrl } from '#lib/utils';
 
-  export let question: Question;
-  export let value: any;
+  let { question, value = $bindable(), interacted = $bindable(false) }: {
+    question: Question,
+    value: any,
+    interacted: any
+  } = $props();
 
   const components: Record<string, any> = {
     text: TextInput,
@@ -20,7 +23,7 @@
     matrix: MatrixInput,
   };
 
-  const selectedComponent = components[question.type];
+  const SelectedComponent = $derived(components[question.type]);
 </script>
 
 {#if question.type !== 'hidden'}
@@ -46,8 +49,12 @@
       {/if}
     </div>
 
-    {#if selectedComponent}
-      <svelte:component this={selectedComponent} {question} bind:value />
+    {#if SelectedComponent}
+      <SelectedComponent
+        {question}
+        bind:value={value}
+        bind:interacted={interacted}
+      />
     {:else}
       <p class="text-red-500 text-sm">Unknown question type: {question.type}</p>
     {/if}

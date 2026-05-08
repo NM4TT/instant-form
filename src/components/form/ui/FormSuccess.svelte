@@ -4,8 +4,13 @@
   import { resolveImageUrl } from '#lib/utils';
 
   let { successConfig }: { 
-    successConfig?: FormConfig['pages']['success'] 
+    successConfig?: FormConfig['pages']['success'] | undefined
   } = $props();
+
+  const renderedMessage = $derived((successConfig?.message || 'Your response has been securely encrypted and submitted.').replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g, 
+    '<a href="$2" class="text-secondary hover:underline font-bold decoration-2 underline-offset-4 transition-all" target="_blank" rel="noopener noreferrer">$1</a>'
+  ));
 </script>
 
 <div class="text-center py-12">
@@ -17,7 +22,9 @@
     </div>
   {/if}
   <h2 class="text-3xl font-display font-extrabold mb-4">{successConfig?.title || 'Thank You!'}</h2>
-  <p class="opacity-70 mb-8">{successConfig?.message || 'Your response has been securely encrypted and submitted.'}</p>
+  <p class="opacity-70 mb-8 whitespace-pre-wrap">
+    {@html renderedMessage}
+  </p>
   <button class="btn-primary rounded-full! p-4!" onclick={() => window.location.reload()}>
     <Icon icon="mdi:home" class="text-2xl" />
   </button>

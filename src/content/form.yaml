@@ -1,16 +1,17 @@
 # Project: instant-form configuration
 project:
-  name: "The AI Perspective Survey"
-  description: "Share your thoughts on the rapid evolution of Artificial Intelligence since the launch of ChatGPT."
+  name: The display name of your form or survey
+  description: A detailed explanation providing context to respondents about the purpose and data usage
 
 branding:
   logo_url: "/logo.svg"
   colors:
-    primary: "#2563eb"
+    primary: "#022b3a"
     background: "#ffffff"
-    surface: "#f9fafb"
-    text: "#000000"
-    border: "rgba(0, 0, 0, 0.1)"
+    surface: "#bfdbf7"
+    text: "#1f7a8c"
+    border: "#e1e5f2"
+
   fonts:
     google_fonts_url: "https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Open+Sans:wght@400;700&display=swap"
     display: "Montserrat"
@@ -19,20 +20,20 @@ branding:
 # Navigation and extra pages
 pages:
   about:
-    title: "About This Survey"
-    content: "This research project aims to understand public sentiment regarding the 'AI Rush' we've experienced over the last few years. All responses are encrypted client-side before being processed."
+    title: "About Page"
+    content: "This is an about page where you can provide more information about your project, its goals, and how the collected data will be used. [Example Link](https://www.example.com)."
   error_404:
-    title: "Survey Not Found"
-    message: "The requested survey is currently unavailable or has expired."
+    title: "Not Found Page"
+    message: "This is an error page that will be displayed if a respondent tries to access a non-existent page. You can customize the title and message to provide a better user experience."
   summary:
-    title: "Verify Your Thoughts"
-    description: "Please review your perspectives on AI before final submission."
+    title: "Summary Page"
+    description: "This is a summary page that will be displayed after a respondent submits the form. You can use this page to thank respondents for their participation, provide a summary of their responses, or offer additional resources related to the survey topic."
   success:
-    title: "Insight Received"
-    message: "Thank you for contributing to this research. Your perspective is valuable."
+    title: "Success Page"
+    message: "This is a success page that will be displayed after a respondent successfully submits the form. You can customize the title and message to provide a better user experience and encourage respondents to share the survey with others."
   failure:
-    title: "Transmission Interrupted"
-    message: "We couldn't securely send your responses. Please try again."
+    title: "Failure Page"
+    message: "This is a failure page that will be displayed if there is an error during form submission. You can customize the title and message to provide a better user experience and encourage respondents to try submitting the form again."
 
 # Global Form Settings
 settings:
@@ -43,32 +44,45 @@ settings:
 # Form Content
 questions:
   - type: "section"
-    title: "The Impact of Innovation"
+    title: The title for a group of related questions
     questions:
-      - id: "innovation_pace"
+      - id: question_1
         type: "star"
-        label: "How would you rate the current pace of AI innovation?"
+        label: The text for a star-based rating question
         max_stars: 5
         required: true
 
-      - id: "daily_usage"
+      - id: question_2
         type: "dropdown"
-        label: "How often do you use Generative AI (ChatGPT, Claude, etc.)?"
-        options: ["Daily", "Weekly", "Monthly", "Rarely", "Never"]
+        label: The text for a single-choice selection menu
+        options: [Option 1, Option 2, Option 3]
         required: true
 
-  - id: "ai_fears"
+  - id: question_3
     type: "ranking"
-    label: "Rank your concerns regarding AI (Most concerning at the top)"
-    items: ["Job Displacement", "Data Privacy", "AI Hallucinations", "Loss of Human Creativity"]
+    label: The instructions for ordering items by priority
+    items: [Item A, Item B, Item C]
     required: true
 
-  - id: "general_sentiment"
+  - id: question_4
     type: "text"
-    label: "In one sentence, what is your biggest hope for the future of AI?"
-    placeholder: "I hope AI helps us solve climate change..."
+    label: The prompt for a short-form written response
+    placeholder: Sample text to guide the user input
     required: true
 
-  - id: "survey_version"
+  - id: question_5
+    type: "mask"
+    label: "Enter your phone number"
+    mask: "(999) 999-9999"
+    required: true
+
+  - id: question_6
+    type: "matrix"
+    label: "Please rate the following features"
+    rows: ["Speed", "Design", "Ease of Use"]
+    columns: ["Poor", "Fair", "Good", "Excellent"]
+    required: true
+
+  - id: hidden_field
     type: "hidden"
     value: "ai_rush_2026_v1"
