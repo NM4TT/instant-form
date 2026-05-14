@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { untrack } from 'svelte';
   import QuestionRenderer from './QuestionRenderer.svelte';
   import FormProgressBar from './ui/FormProgressBar.svelte';
   import FormReview from './ui/FormReview.svelte';
@@ -24,19 +24,9 @@
   let showingSummary = $state(false);
   let errorMessage = $state("");
 
-  const extractQuestions = (items: (Question | Section)[]): Question[] => {
-    let qList: Question[] = [];
-    items.forEach(item => {
-      if ('type' in item && item.type === 'section') {
-        qList = [...qList, ...item.questions];
-      } else {
-        qList.push(item as Question);
-      }
-    });
-    return qList;
-  };
-
-  const allQuestions = $derived(extractQuestions(questions));
+  const allQuestions = $derived(questions.flatMap(item => 
+    'type' in item && item.type === 'section' ? item.questions : [item as Question]
+  ));
 
   const initializeResponses = () => {
     const initial: Record<string, any> = {};
@@ -62,17 +52,22 @@
   let interactions = $state<Record<string, any>>(initializeInteractions());
 
   $effect(() => {
-    allQuestions.forEach(q => {
-      if (!(q.id in responses)) {
-        if (q.type === 'hidden') responses[q.id] = q.value ?? "";
-        else if (q.type === 'star') responses[q.id] = 0;
-        else if (q.type === 'ranking') responses[q.id] = [...(q.items || [])];
-        else if (q.type === 'matrix') responses[q.id] = {};
-        else responses[q.id] = "";
-      }
-      if (!(q.id in interactions)) {
-        interactions[q.id] = false;
-      }
+    // Track allQuestions changes
+    const questions = allQuestions;
+    
+    untrack(() => {
+      questions.forEach(q => {
+        if (!(q.id in responses)) {
+          if (q.type === 'hidden') responses[q.id] = q.value ?? "";
+          else if (q.type === 'star') responses[q.id] = 0;
+          else if (q.type === 'ranking') responses[q.id] = [...(q.items || [])];
+          else if (q.type === 'matrix') responses[q.id] = {};
+          else responses[q.id] = "";
+        }
+        if (!(q.id in interactions)) {
+          interactions[q.id] = false;
+        }
+      });
     });
   });
 
@@ -115,7 +110,7 @@
   const totalPages = $derived(pages.length);
 
   const validatePage = () => {
-    for (const q of currentQuestions) {
+    return currentQuestions.every(q => {
       const val = responses[q.id];
       const interacted = interactions[q.id];
 
@@ -134,8 +129,8 @@
         const re = new RegExp(q.regex);
         if (!re.test(val)) return false;
       }
-    }
-    return true;
+      return true;
+    });
   };
 
   const nextStep = () => {
@@ -208,10 +203,6 @@
   const retry = () => {
     failed = false;
   };
-
-  onMount(() => {
-    // Already initialized in initializeResponses
-  });
 </script>
 
 <div class="bg-bg-surface p-6 md:p-10 rounded-2xl border border-secondary/10 shadow-xs">

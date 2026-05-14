@@ -1,5 +1,8 @@
 <script lang="ts">
-  import Icon from '@iconify/svelte';
+  import IconArrowLeft from '~icons/mdi/arrow-left';
+  import IconArrowRight from '~icons/mdi/arrow-right';
+  import IconLoading from '~icons/mdi/loading';
+  import IconCheckBold from '~icons/mdi/check-bold';
 
   let { 
     currentPage, 
@@ -27,7 +30,7 @@
         disabled={isSubmitting}
         aria-label="Previous"
       >
-        <Icon icon="mdi:arrow-left" class="text-2xl" />
+        <IconArrowLeft class="text-2xl" />
       </button>
     {/if}
   </div>
@@ -39,7 +42,7 @@
       disabled={isSubmitting}
       aria-label="Next"
     >
-      <Icon icon="mdi:arrow-right" class="text-2xl" />
+      <IconArrowRight class="text-2xl" />
     </button>
   {:else}
     <button 
@@ -49,9 +52,9 @@
       aria-label="Submit"
     >
       {#if isSubmitting}
-        <Icon icon="mdi:loading" class="text-2xl animate-spin" />
+        <IconLoading class="text-2xl animate-spin" />
       {:else}
-        <Icon icon="mdi:check-bold" class="text-2xl" />
+        <IconCheckBold class="text-2xl" />
       {/if}
     </button>
   {/if}

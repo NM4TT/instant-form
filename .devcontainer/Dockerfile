@@ -7,4 +7,4 @@ RUN npx playwright install-deps
 USER node
 
 # Enable pnpm for the 'node' user
-RUN corepack enable && corepack prepare pnpm@latest --activate
+RUN corepack enable && corepack prepare pnpm@11.1.2 --activate

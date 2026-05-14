@@ -26,7 +26,13 @@ const colors = form?.branding.colors;
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{pageTitle}</title>
-		{fonts?.google_fonts_url && <link href={fonts.google_fonts_url} rel="stylesheet" />}
+		{fonts?.google_fonts_url && (
+			<>
+				<link rel="preconnect" href="https://fonts.googleapis.com" />
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+				<link href={fonts.google_fonts_url} rel="stylesheet" />
+			</>
+		)}
 		<style define:vars={{
 			displayFont: fonts?.display ? `'${fonts.display}', var(--font-display-fallback)` : 'var(--font-display-fallback)',
 			sansFont: fonts?.sans ? `'${fonts.sans}', var(--font-sans-fallback)` : 'var(--font-sans-fallback)',
@@ -58,13 +64,13 @@ const colors = form?.branding.colors;
 						<span class="font-display font-extrabold text-xl">{form?.project.name}</span>
 					</a>
 					<div class="hidden md:block">
-						<DesktopMenu client:load aboutTitle={aboutTitle} />
+						<DesktopMenu aboutTitle={aboutTitle} />
 					</div>
 				</div>
 			</header>
 
 			<div class="md:hidden">
-				<MobileMenu client:load aboutTitle={aboutTitle} />
+				<MobileMenu client:idle aboutTitle={aboutTitle} />
 			</div>
 
 			<div class="pb-20">

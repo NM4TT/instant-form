@@ -1,5 +1,6 @@
 <script lang="ts">
-  import Icon from '@iconify/svelte';
+  import IconPlaylistCheck from '~icons/mdi/playlist-check';
+  import IconLayersOutline from '~icons/mdi/layers-outline';
   import type { FormConfig } from '#lib/types';
 
   let { 
@@ -21,7 +22,11 @@
   <div class="flex justify-between items-center text-sm font-mono opacity-50 mb-2">
     <div class="flex flex-col">
       <div class="flex items-center gap-1.5">
-        <Icon icon={showingSummary ? "mdi:playlist-check" : "mdi:layers-outline"} class="text-lg" />
+        {#if showingSummary}
+          <IconPlaylistCheck class="text-lg" />
+        {:else}
+          <IconLayersOutline class="text-lg" />
+        {/if}
         <span>{showingSummary ? (summaryConfig?.title || 'Review Summary') : `${currentPage + 1} of ${totalPages}`}</span>
       </div>
       {#if !showingSummary && currentSectionTitle}

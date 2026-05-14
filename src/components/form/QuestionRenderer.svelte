@@ -42,6 +42,8 @@
             <img 
               src={resolveImageUrl(img)} 
               alt="" 
+              loading="lazy"
+              decoding="async"
               class="h-32 w-auto rounded-lg object-cover border border-secondary/10"
             />
           {/each}
